@@ -6,11 +6,12 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Calculator calc = new Calculator();
-        int choice = 0;
         Scanner scan = new Scanner(System.in);
-        calc.Menu(scan);
-        String input = calc.parseExpression(scan, choice);
+        String input = calc.parseExpression(scan);
        List<String> output =  calc.toPostfix(input);
-        System.out.println("Given string postfix is "+ String.join(" ", output));
+
+       double res =  calc.evaluatePostfix(output);
+        System.out.println("Given string postfix is "+ res);
+
     }
 }

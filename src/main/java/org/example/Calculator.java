@@ -6,20 +6,7 @@ public class Calculator {
 
     public static final String GREETING_TEXT = "Welcome To Console Calculator";
 
-    public Integer Menu(Scanner scan){
-        System.out.println("List of Operations");
-        System.out.println("1. Enter Expression with spaces: ");
-        System.out.println("2. View History: ");
-        System.out.println("3. Clear History");
-        System.out.println("4. Exit");
-        System.out.print("Enter what you want to perform: ");
-       int choice = scan.nextInt();
-        scan.nextLine();
-
-        return choice;
-    }
-
-    public String parseExpression(Scanner scan, int choice) {
+    public String parseExpression(Scanner scan) {
 
         System.out.println("Please enter expression: ");
         String input = scan.nextLine();
@@ -57,4 +44,46 @@ public class Calculator {
         }
         return output;
     }
+
+    public Double evaluatePostfix(List<String> postfixExpression) {
+        Stack<Double> stack = new Stack<>();
+
+        for (String token : postfixExpression) {
+            if (token.matches("\\d+")) {
+                stack.push(Double.parseDouble(token));
+            } else {
+                double operand2 = stack.pop();
+                double operand1 = stack.pop();
+                double result = 0;
+
+                switch (token) {
+                    case "+":
+                        result = operand1 + operand2;
+                        break;
+                    case "-":
+                        result = operand1 - operand2;
+                        break;
+                    case "*":
+                        result = operand1 * operand2;
+                        break;
+                    case "/":
+                        if (operand2 != 0) {
+                            result = operand1 / operand2;
+                        } else {
+                            System.out.println("Error: Division by zero");
+                            return Double.NaN;
+                        }
+                        break;
+                    default:
+                        System.out.println("Unknown operator: " + token);
+                        return Double.NaN;
+                }
+
+                stack.push(result);
+            }
+        }
+
+        return stack.pop();
+    }
+
 }
